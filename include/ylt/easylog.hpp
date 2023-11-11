@@ -287,7 +287,7 @@ inline void add_appender(std::function<void(std::string_view)> fn) {
 #endif
 
 #ifndef MELOG_TRACE
-#define MELOG_TRACE(id) ELOG(INFO, id)
+#define MELOG_TRACE(id) ELOG(TRACE, id)
 #endif
 #ifndef MELOG_DEBUG
 #define MELOG_DEBUG(id) ELOG(DEBUG, id)

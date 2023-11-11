@@ -31,6 +31,7 @@
 #include <string>
 #include <string_view>
 #include <utility>
+#include <iostream>
 
 #include "ylt/util/dragonbox_to_chars.h"
 #include "ylt/util/meta_string.hpp"
@@ -146,6 +147,7 @@ class record_t {
     using U = std::remove_cvref_t<T>;
     if constexpr (std::is_floating_point_v<U>) {
       char temp[40];
+      // auto [end, ec] = std::to_chars(temp, temp + 40, data);
       const auto end = jkj::dragonbox::to_chars(data, temp);
       ss_.append(temp, std::distance(temp, end));
     }

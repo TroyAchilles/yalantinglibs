@@ -16,9 +16,11 @@
 #include <ylt/util/time_util.h>
 
 #include <filesystem>
+#include <thread>
 #include <ylt/easylog.hpp>
 
 #include "doctest.h"
+#include "ylt/easylog/record.hpp"
 
 using namespace easylog;
 
@@ -61,7 +63,6 @@ TEST_CASE("test basic") {
   std::unique_ptr<int> ptr(new int(42));
   ELOG_INFO << ptr.get();
   ELOG_INFO << 42 << " " << 4.5 << 'a' << Severity::DEBUG;
-  ELOG_INFO << false << ", " << true;
   char buf[5] = {"test"};
   std::string_view sv = "test";
   std::string str = "test";
@@ -75,7 +76,7 @@ TEST_CASE("test basic") {
 
 #if __has_include(<fmt/format.h>) || (__has_include(<format>) && !defined(__APPLE__))
   ELOGFMT(INFO, "{} {}", 20, 42);
-  ELOGFMT(INFO, "it is a long string test {} {}", 42, "fmt");
+  ELOGFMT(INFO, "it 2222 is a long string test {} {}", 42, "fmt");
 #endif
 
   ELOGV(INFO, "test");
@@ -108,7 +109,7 @@ TEST_CASE("test basic") {
   std::string other_filename = "other.txt";
   std::filesystem::remove(other_filename);
   constexpr size_t InstanceId = 2;
-  easylog::init_log<InstanceId>(Severity::DEBUG, other_filename, false, false);
+  easylog::init_log<InstanceId>(Severity::DEBUG, other_filename, false, true);
   ELOG(INFO, InstanceId) << "ok in other txt";
   easylog::flush<InstanceId>();
   CHECK(get_last_line(other_filename).rfind("ok in other txt") !=
@@ -181,7 +182,6 @@ TEST_CASE("file_number") {
   MELOGV(INFO, FourthId, "append data to file1.");
   MELOGV(INFO, FourthId, "append data to file2.");
   MELOGV(INFO, FourthId, "append data to file3.");
-
   CHECK(file_exists("test_number.1.txt") == true);
   CHECK(file_exists("test_number.2.txt") == true);
 }
